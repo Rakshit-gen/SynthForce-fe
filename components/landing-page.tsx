@@ -15,6 +15,7 @@ import {
   Cpu,
 } from "lucide-react"
 import { SignInButton } from "@clerk/nextjs"
+import Image from "next/image"
 
 const features = [
   {
@@ -93,7 +94,7 @@ export default function LandingPage() {
               }}
               className="inline-block"
             >
-              <Brain className="h-20 w-20 text-primary mx-auto neon-glow" />
+              <Image src="/images/logo.png" alt="SynthWork" width={100} height={100} />
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
