@@ -94,7 +94,7 @@ export default function LandingPage() {
               }}
               className="inline-block"
             >
-              <Image src="/images/logo.png" alt="SynthWork" width={100} height={100} />
+              <Image src="/icon.svg" alt="SynthWork" width={100} height={100} />
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
