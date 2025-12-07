@@ -4,9 +4,10 @@ import { getAuth } from '@clerk/nextjs/server'
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000'
 
 export interface ApiError {
-  error: string
-  message: string
-  details?: Array<{ field: string; message: string; type: string }>
+  error?: string
+  message?: string
+  detail?: string
+  details?: Array<{ field: string; message: string; type: string }> | string
 }
 
 class ApiClient {
@@ -55,7 +56,23 @@ class ApiClient {
             }
           } else if (error.response.status === 429) {
             // Rate limit error - provide helpful message
-            const detail = apiError?.details || apiError?.message || 'Rate limit exceeded'
+            let detail: string = 'Rate limit exceeded'
+            
+            // FastAPI returns 'detail' (singular) as a string
+            if (apiError?.detail && typeof apiError.detail === 'string') {
+              detail = apiError.detail
+            } else if (apiError?.message && typeof apiError.message === 'string') {
+              detail = apiError.message
+            } else if (apiError?.details) {
+              if (Array.isArray(apiError.details) && apiError.details.length > 0) {
+                // If details is an array, use the first detail's message
+                detail = apiError.details[0].message || 'Rate limit exceeded'
+              } else if (typeof apiError.details === 'string') {
+                // If details is a string (fallback)
+                detail = apiError.details
+              }
+            }
+            
             const message = detail.includes('wait') 
               ? detail 
               : `${detail}. Please wait a moment and try again, or add more API keys.`
