@@ -34,13 +34,48 @@ export default function DashboardPage() {
   const loadSimulations = async () => {
     try {
       setLoading(true)
-      // In a real app, you'd fetch simulations from an API endpoint
-      // For now, we'll use mock data or empty array
-      setActiveSimulations([])
-    } catch (error) {
+      const response = await api.simulations.list({ limit: 100 }) as {
+        simulations: Array<{
+          session_id: string
+          name?: string
+          description?: string
+          scenario: string
+          status: string
+          current_turn: number
+          max_turns: number
+          created_at: string
+          updated_at: string
+        }>
+        total: number
+      }
+      
+      // Convert to Simulation format
+      const simulations = response.simulations.map((sim) => ({
+        session_id: sim.session_id,
+        name: sim.name,
+        description: sim.description,
+        scenario: sim.scenario,
+        status: sim.status as "active" | "paused" | "completed" | "failed",
+        current_turn: sim.current_turn,
+        max_turns: sim.max_turns,
+        created_at: sim.created_at,
+        updated_at: sim.updated_at,
+      }))
+      
+      setActiveSimulations(simulations)
+    } catch (error: any) {
+      console.error("Failed to load simulations:", {
+        error,
+        detail: error?.detail,
+        message: error?.message,
+        response: error?.response,
+      })
+      
+      const errorMessage = error?.detail || error?.message || error?.response?.data?.detail || "Failed to load simulations"
+      
       toast({
         title: "Error",
-        description: "Failed to load simulations",
+        description: errorMessage,
         variant: "destructive",
       })
     } finally {

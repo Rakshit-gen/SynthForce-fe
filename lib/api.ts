@@ -46,7 +46,13 @@ class ApiClient {
       (error: AxiosError<ApiError>) => {
         if (error.response) {
           const apiError = error.response.data
-          console.error('API Error:', apiError)
+          console.error('API Error:', {
+            status: error.response.status,
+            statusText: error.response.statusText,
+            data: apiError,
+            url: error.config?.url,
+            method: error.config?.method,
+          })
           
           // Handle specific error cases
           if (error.response.status === 401) {
@@ -162,6 +168,16 @@ export const api = {
       }>
       num_turns_to_simulate?: number
     }) => apiClient.post('/simulate/what-if', data),
+
+    list: (params?: { status?: string; limit?: number; offset?: number }) => {
+      const queryParams = new URLSearchParams()
+      if (params?.status) queryParams.append('status', params.status)
+      if (params?.limit) queryParams.append('limit', params.limit.toString())
+      if (params?.offset) queryParams.append('offset', params.offset.toString())
+      const query = queryParams.toString()
+      const url = `/simulations${query ? `?${query}` : ''}`
+      return apiClient.get(url)
+    },
 
     getState: (sessionId: string) => apiClient.get(`/simulate/${sessionId}`),
 
