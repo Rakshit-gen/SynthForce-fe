@@ -12,7 +12,7 @@ export function Navbar() {
   const pathname = usePathname()
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-sm">
+    <nav className="fixed top-0 left-0 right-0 z-50 w-full border-b border-border/40 bg-background/80 backdrop-blur-xl supports-[backdrop-filter]:bg-background/60 shadow-sm">
       <div className="container flex h-16 items-center justify-between">
         <Link 
           href="/dashboard" 
@@ -31,7 +31,7 @@ export function Navbar() {
             />
           </motion.div>
           <span className="text-xl font-bold gradient-text group-hover:scale-105 transition-transform">
-            SynthWork
+            SynthForce
           </span>
         </Link>
 

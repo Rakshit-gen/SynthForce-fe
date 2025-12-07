@@ -94,7 +94,7 @@ export default function LandingPage() {
               }}
               className="inline-block"
             >
-              <Image src="/icon.svg" alt="SynthWork" width={100} height={100} />
+              <Image src="/icon.svg" alt="SynthForce" width={100} height={100} />
             </motion.div>
 
             <h1 className="text-5xl md:text-7xl font-bold tracking-tight">
@@ -255,10 +255,10 @@ export default function LandingPage() {
           <div className="flex flex-col md:flex-row justify-between items-center">
             <div className="flex items-center space-x-2 mb-4 md:mb-0">
               <Brain className="h-6 w-6 text-primary" />
-              <span className="text-lg font-bold">SynthWork</span>
+              <span className="text-lg font-bold">SynthForce</span>
             </div>
             <p className="text-sm text-muted-foreground">
-              © 2024 SynthWork. All rights reserved.
+              © 2024 SynthForce. All rights reserved.
             </p>
           </div>
         </div>

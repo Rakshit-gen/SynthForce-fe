@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Synthetic Workforce Simulator",
   description: "Multi-agent simulation engine for workforce scenarios",
   keywords: ["AI", "simulation", "workforce", "multi-agent"],
-  authors: [{ name: "SynthWork" }],
+  authors: [{ name: "SynthForce" }],
   icons: {
     icon: "/favicon.svg",
     apple: "/icon.svg",
