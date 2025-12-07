@@ -386,7 +386,7 @@ export default function SimulationWorkspacePage() {
 
           {turns.length === 0 && (
             <div className="text-center py-20 text-muted-foreground">
-              <p>No turns executed yet. Click "Run Next Turn" to start.</p>
+              <p>No turns executed yet. Click &quot;Run Next Turn&quot; to start.</p>
             </div>
           )}
 
