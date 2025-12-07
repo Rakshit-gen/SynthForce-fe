@@ -34,8 +34,8 @@ export default function NotFound() {
             <h1 className="text-8xl font-bold gradient-text">404</h1>
             <h2 className="text-4xl font-bold">Page Not Found</h2>
             <p className="text-xl text-muted-foreground max-w-md mx-auto">
-              The simulation you're looking for doesn't exist in this reality.
-              Perhaps it's in a parallel dimension?
+              The simulation you&apos;re looking for doesn&apos;t exist in this reality.
+              Perhaps it&apos;s in a parallel dimension?
             </p>
           </div>
 

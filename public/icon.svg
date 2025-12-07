@@ -1,0 +1,100 @@
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1;stop-opacity:1" />
+      <stop offset="50%" style="stop-color:#8b5cf6;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#ec4899;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="glowGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#60a5fa;stop-opacity:0.8" />
+      <stop offset="100%" style="stop-color:#a78bfa;stop-opacity:0.8" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="4" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  
+  <!-- Background Circle -->
+  <circle cx="256" cy="256" r="240" fill="url(#bgGradient)" opacity="0.1"/>
+  
+  <!-- Outer Ring with Glow -->
+  <circle cx="256" cy="256" r="200" fill="none" stroke="url(#glowGradient)" stroke-width="3" opacity="0.6" filter="url(#glow)"/>
+  
+  <!-- Central Hub/Network Node -->
+  <circle cx="256" cy="256" r="40" fill="url(#bgGradient)" opacity="0.9"/>
+  <circle cx="256" cy="256" r="30" fill="white" opacity="0.2"/>
+  <circle cx="256" cy="256" r="20" fill="white" opacity="0.4"/>
+  
+  <!-- Agent Nodes (6 agents in a circle) -->
+  <!-- Top Agent -->
+  <g>
+    <circle cx="256" cy="120" r="35" fill="url(#bgGradient)" opacity="0.8"/>
+    <circle cx="256" cy="120" r="25" fill="white" opacity="0.3"/>
+    <circle cx="256" cy="120" r="15" fill="white"/>
+    <!-- Connection Line -->
+    <line x1="256" y1="160" x2="256" y2="185" stroke="url(#glowGradient)" stroke-width="2" opacity="0.5"/>
+  </g>
+  
+  <!-- Top Right Agent -->
+  <g>
+    <circle cx="360" cy="180" r="35" fill="url(#bgGradient)" opacity="0.8"/>
+    <circle cx="360" cy="180" r="25" fill="white" opacity="0.3"/>
+    <circle cx="360" cy="180" r="15" fill="white"/>
+    <line x1="280" y1="220" x2="325" y2="200" stroke="url(#glowGradient)" stroke-width="2" opacity="0.5"/>
+  </g>
+  
+  <!-- Bottom Right Agent -->
+  <g>
+    <circle cx="360" cy="332" r="35" fill="url(#bgGradient)" opacity="0.8"/>
+    <circle cx="360" cy="332" r="25" fill="white" opacity="0.3"/>
+    <circle cx="360" cy="332" r="15" fill="white"/>
+    <line x1="280" y1="292" x2="325" y2="312" stroke="url(#glowGradient)" stroke-width="2" opacity="0.5"/>
+  </g>
+  
+  <!-- Bottom Agent -->
+  <g>
+    <circle cx="256" cy="392" r="35" fill="url(#bgGradient)" opacity="0.8"/>
+    <circle cx="256" cy="392" r="25" fill="white" opacity="0.3"/>
+    <circle cx="256" cy="392" r="15" fill="white"/>
+    <line x1="256" y1="296" x2="256" y2="327" stroke="url(#glowGradient)" stroke-width="2" opacity="0.5"/>
+  </g>
+  
+  <!-- Bottom Left Agent -->
+  <g>
+    <circle cx="152" cy="332" r="35" fill="url(#bgGradient)" opacity="0.8"/>
+    <circle cx="152" cy="332" r="25" fill="white" opacity="0.3"/>
+    <circle cx="152" cy="332" r="15" fill="white"/>
+    <line x1="232" y1="292" x2="187" y2="312" stroke="url(#glowGradient)" stroke-width="2" opacity="0.5"/>
+  </g>
+  
+  <!-- Top Left Agent -->
+  <g>
+    <circle cx="152" cy="180" r="35" fill="url(#bgGradient)" opacity="0.8"/>
+    <circle cx="152" cy="180" r="25" fill="white" opacity="0.3"/>
+    <circle cx="152" cy="180" r="15" fill="white"/>
+    <line x1="232" y1="220" x2="187" y2="200" stroke="url(#glowGradient)" stroke-width="2" opacity="0.5"/>
+  </g>
+  
+  <!-- AI/Neural Network Pattern Overlay -->
+  <g opacity="0.3">
+    <path d="M 200 200 Q 256 180 312 200" stroke="white" stroke-width="1.5" fill="none"/>
+    <path d="M 200 312 Q 256 332 312 312" stroke="white" stroke-width="1.5" fill="none"/>
+    <path d="M 180 256 Q 200 256 220 256" stroke="white" stroke-width="1.5" fill="none"/>
+    <path d="M 292 256 Q 312 256 332 256" stroke="white" stroke-width="1.5" fill="none"/>
+  </g>
+  
+  <!-- Sparkle Effects -->
+  <g opacity="0.6">
+    <circle cx="180" cy="140" r="2" fill="white"/>
+    <circle cx="332" cy="140" r="2" fill="white"/>
+    <circle cx="180" cy="372" r="2" fill="white"/>
+    <circle cx="332" cy="372" r="2" fill="white"/>
+    <circle cx="140" cy="256" r="2" fill="white"/>
+    <circle cx="372" cy="256" r="2" fill="white"/>
+  </g>
+</svg>
+

@@ -102,7 +102,7 @@ export default function NewSimulationPage() {
           enable_memory: formData.enableMemory,
           enable_analytics: formData.enableAnalytics,
         },
-      })
+      }) as { session_id: string; status: string; created_at: string }
 
       console.log("Simulation started:", response.session_id)
 
@@ -111,7 +111,7 @@ export default function NewSimulationPage() {
         name: formData.name,
         description: formData.description,
         scenario: formData.scenario,
-        status: response.status,
+        status: response.status as "active" | "paused" | "completed" | "failed",
         current_turn: 0,
         max_turns: maxTurns,
         created_at: response.created_at,
@@ -137,22 +137,32 @@ export default function NewSimulationPage() {
   }
 
   return (
-    <div className="container py-8 max-w-4xl">
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-      >
-        <h1 className="text-4xl font-bold mb-2">Start New Simulation</h1>
-        <p className="text-muted-foreground mb-8">
-          Configure your simulation scenario and agents
-        </p>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+      <div className="container py-12 max-w-4xl">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="space-y-2 mb-10"
+        >
+          <h1 className="text-5xl font-bold tracking-tight gradient-text">
+            Start New Simulation
+          </h1>
+          <p className="text-lg text-muted-foreground">
+            Configure your simulation scenario and select AI agents to collaborate
+          </p>
+        </motion.div>
 
         <form onSubmit={handleSubmit} className="space-y-6">
-          <Card className="glass-effect">
-            <CardHeader>
-              <CardTitle>Basic Information</CardTitle>
-              <CardDescription>Give your simulation a name and description</CardDescription>
-            </CardHeader>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+          >
+            <Card className="glass-effect card-hover border-2">
+              <CardHeader className="space-y-2">
+                <CardTitle className="text-xl">Basic Information</CardTitle>
+                <CardDescription>Give your simulation a name and description</CardDescription>
+              </CardHeader>
             <CardContent className="space-y-4">
               <div>
                 <Label htmlFor="name">Name (Optional)</Label>
@@ -301,28 +311,54 @@ export default function NewSimulationPage() {
               </div>
             </CardContent>
           </Card>
+          </motion.div>
 
-          <div className="flex justify-end gap-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="flex justify-end gap-4 pt-4"
+          >
             <Button
               type="button"
               variant="outline"
               onClick={() => router.back()}
+              className="hover:bg-muted/50"
             >
               Cancel
             </Button>
-            <Button type="submit" variant="neon" className="neon-glow" disabled={loading}>
-              {loading ? (
-                "Starting..."
-              ) : (
-                <>
-                  <Rocket className="mr-2 h-5 w-5" />
-                  Start Simulation
-                </>
-              )}
-            </Button>
-          </div>
+            <motion.div
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              <Button 
+                type="submit" 
+                size="lg"
+                disabled={loading}
+                className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50"
+              >
+                {loading ? (
+                  <>
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                      className="mr-2"
+                    >
+                      <Rocket className="h-5 w-5" />
+                    </motion.div>
+                    Starting...
+                  </>
+                ) : (
+                  <>
+                    <Rocket className="mr-2 h-5 w-5" />
+                    Start Simulation
+                  </>
+                )}
+              </Button>
+            </motion.div>
+          </motion.div>
         </form>
-      </motion.div>
+      </div>
     </div>
   )
 }

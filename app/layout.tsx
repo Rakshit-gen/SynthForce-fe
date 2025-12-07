@@ -11,6 +11,10 @@ export const metadata: Metadata = {
   description: "Multi-agent simulation engine for workforce scenarios",
   keywords: ["AI", "simulation", "workforce", "multi-agent"],
   authors: [{ name: "SynthWork" }],
+  icons: {
+    icon: "/favicon.svg",
+    apple: "/icon.svg",
+  },
   openGraph: {
     title: "Synthetic Workforce Simulator",
     description: "Multi-agent simulation engine for workforce scenarios",

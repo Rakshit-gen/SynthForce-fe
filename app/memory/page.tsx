@@ -23,12 +23,6 @@ export default function MemoryViewerPage() {
   const [sessionId, setSessionId] = useState(sessionIdParam)
   const [memoryData, setMemoryData] = useState<any>(null)
 
-  useEffect(() => {
-    if (sessionIdParam) {
-      loadMemory()
-    }
-  }, [sessionIdParam])
-
   const loadMemory = async () => {
     if (!sessionId) {
       toast({
@@ -53,6 +47,13 @@ export default function MemoryViewerPage() {
       setLoading(false)
     }
   }
+
+  useEffect(() => {
+    if (sessionIdParam && sessionId) {
+      loadMemory()
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionIdParam])
 
   const getMemoryTypeColor = (type: string) => {
     switch (type) {

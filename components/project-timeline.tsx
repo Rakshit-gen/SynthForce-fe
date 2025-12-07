@@ -34,32 +34,32 @@ interface ProjectTimelineProps {
 }
 
 export function ProjectTimeline({ timeline, className }: ProjectTimelineProps) {
-  if (!timeline || !timeline.tasks || timeline.tasks.length === 0) return null
+  const tasks = timeline?.tasks || []
+  const criticalPath = new Set(timeline?.critical_path || [])
+  const slackDays = timeline?.slack_days || {}
 
-  const tasks = timeline.tasks || []
-  const criticalPath = new Set(timeline.critical_path || [])
-  const slackDays = timeline.slack_days || {}
-
-  // Calculate timeline scale
+  // Calculate timeline scale - hooks must be called unconditionally
   const startDate = useMemo(() => {
-    if (timeline.project_start_date) {
+    if (timeline?.project_start_date) {
       const date = new Date(timeline.project_start_date)
       return isNaN(date.getTime()) ? new Date() : date
     }
     return new Date()
-  }, [timeline.project_start_date])
+  }, [timeline?.project_start_date])
 
   const endDate = useMemo(() => {
-    if (timeline.project_end_date) {
+    if (timeline?.project_end_date) {
       const date = new Date(timeline.project_end_date)
       if (!isNaN(date.getTime())) return date
     }
-    return new Date(startDate.getTime() + (timeline.total_duration_days || 0) * 24 * 60 * 60 * 1000)
-  }, [timeline.project_end_date, timeline.total_duration_days, startDate])
+    return new Date(startDate.getTime() + (timeline?.total_duration_days || 0) * 24 * 60 * 60 * 1000)
+  }, [timeline?.project_end_date, timeline?.total_duration_days, startDate])
   
   const totalDays = useMemo(() => {
     return Math.max(1, Math.ceil((endDate.getTime() - startDate.getTime()) / (24 * 60 * 60 * 1000)))
   }, [startDate, endDate])
+
+  if (!timeline || !timeline.tasks || timeline.tasks.length === 0) return null
 
   const getStatusColor = (status: string) => {
     switch (status.toLowerCase()) {

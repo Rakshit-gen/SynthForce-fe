@@ -101,6 +101,7 @@ export default function SimulationWorkspacePage() {
     return () => {
       stopPolling()
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sessionId])
 
   const scrollToBottom = () => {
@@ -242,29 +243,56 @@ export default function SimulationWorkspacePage() {
       {/* Main Chat Area */}
       <div className="flex-1 flex flex-col overflow-hidden min-h-0">
         {/* Header */}
-        <div className="border-b p-4 flex items-center justify-between">
-          <div>
+        <div className="border-b border-border/40 bg-background/50 backdrop-blur-sm p-6 flex items-center justify-between">
+          <div className="flex-1">
             <Link href="/dashboard">
-              <Button variant="ghost" size="sm">
+              <Button variant="ghost" size="sm" className="mb-3 hover:bg-muted/50">
                 <ArrowLeft className="mr-2 h-4 w-4" />
-                Back
+                Back to Dashboard
               </Button>
             </Link>
-            <h2 className="text-2xl font-bold mt-2">
-              {simulationState?.name || "Simulation"}
-            </h2>
-            <p className="text-sm text-muted-foreground">
-              Turn {simulationState?.current_turn || 0} / {simulationState?.max_turns || 50}
-            </p>
+            <div className="space-y-1">
+              <h2 className="text-3xl font-bold gradient-text">
+                {simulationState?.name || "Simulation"}
+              </h2>
+              <div className="flex items-center gap-4">
+                <div className="flex items-center gap-2">
+                  <span className="text-sm text-muted-foreground">Turn</span>
+                  <span className="text-lg font-semibold text-primary">
+                    {simulationState?.current_turn || 0}
+                  </span>
+                  <span className="text-sm text-muted-foreground">/</span>
+                  <span className="text-sm text-muted-foreground">
+                    {simulationState?.max_turns || 50}
+                  </span>
+                </div>
+                {simulationState?.status && (
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-semibold ${
+                    simulationState.status === "active" ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400" :
+                    simulationState.status === "paused" ? "bg-amber-500/20 text-amber-600 dark:text-amber-400" :
+                    "bg-blue-500/20 text-blue-600 dark:text-blue-400"
+                  }`}>
+                    {simulationState.status}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
-          <div className="flex gap-2">
+          <div className="flex gap-3">
             <Link href={`/what-if?sessionId=${sessionId}`}>
-              <Button variant="outline">
+              <Button 
+                variant="outline" 
+                className="hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all"
+              >
                 <Lightbulb className="mr-2 h-4 w-4" />
                 What-If
               </Button>
             </Link>
-            <Button variant="outline" onClick={handleExport}>
+            <Button 
+              variant="outline" 
+              onClick={handleExport}
+              className="hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all"
+            >
               <Download className="mr-2 h-4 w-4" />
               Export
             </Button>
@@ -344,6 +372,9 @@ export default function SimulationWorkspacePage() {
                           .replace(/\//g, "")
                           .replace(/^[-*•]\s+/gm, "")
                           .replace(/^\d+\.\s+/gm, "")
+                          .replace(/&quot;/g, "&quot;")
+                          .replace(/&ldquo;/g, "&ldquo;")
+                          .replace(/&rdquo;/g, "&rdquo;")
                           .trim()}
                       </p>
                     </CardContent>
@@ -386,38 +417,70 @@ export default function SimulationWorkspacePage() {
         </Tabs>
 
         {/* Input Area - Always visible at bottom */}
-        <div className="border-t p-4 space-y-2 bg-background flex-shrink-0">
-          <Input
-            placeholder="Add user input (optional)..."
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" && !e.shiftKey && !executing) {
-                e.preventDefault()
-                handleNextTurn()
-              }
-            }}
-            disabled={executing}
-          />
+        <div className="border-t border-border/40 p-6 space-y-3 bg-background/80 backdrop-blur-sm flex-shrink-0 shadow-lg">
+          <div className="relative">
+            <Input
+              placeholder="Add user input (optional)..."
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" && !e.shiftKey && !executing) {
+                  e.preventDefault()
+                  handleNextTurn()
+                }
+              }}
+              disabled={executing}
+              className="pr-12 h-12 text-base"
+            />
+            {userInput && (
+              <Button
+                variant="ghost"
+                size="sm"
+                onClick={() => setUserInput("")}
+                className="absolute right-2 top-1/2 -translate-y-1/2 h-8 w-8 p-0"
+              >
+                ×
+              </Button>
+            )}
+          </div>
           <Button
             onClick={handleNextTurn}
             disabled={executing || !canExecuteTurn}
-            variant="neon"
-            className="w-full neon-glow"
+            size="lg"
+            className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            <Play className="mr-2 h-5 w-5" />
-            {executing ? "Executing..." : "Run Next Turn"}
+            {executing ? (
+              <>
+                <motion.div
+                  animate={{ rotate: 360 }}
+                  transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
+                  className="mr-2"
+                >
+                  <Play className="h-5 w-5" />
+                </motion.div>
+                Executing...
+              </>
+            ) : (
+              <>
+                <Play className="mr-2 h-5 w-5" />
+                Run Next Turn
+              </>
+            )}
           </Button>
           {!canExecuteTurn && simulationState && (
-            <p className="text-xs text-muted-foreground text-center">
+            <motion.p 
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              className="text-sm text-muted-foreground text-center p-2 rounded-lg bg-muted/50"
+            >
               {simulationState.status === "completed" 
-                ? "All turns completed." 
+                ? "✅ All turns completed." 
                 : simulationState.current_turn >= simulationState.max_turns
-                ? "Maximum turns reached."
+                ? "⚠️ Maximum turns reached."
                 : simulationState.status && simulationState.status !== "active"
-                ? `Simulation status: ${simulationState.status}. Cannot execute turns.`
-                : "Loading simulation state..."}
-            </p>
+                ? `⏸️ Simulation status: ${simulationState.status}. Cannot execute turns.`
+                : "⏳ Loading simulation state..."}
+            </motion.p>
           )}
         </div>
       </div>

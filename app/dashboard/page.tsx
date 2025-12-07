@@ -100,47 +100,65 @@ export default function DashboardPage() {
 
   if (loading) {
     return (
-      <div className="container py-8">
-        <DashboardSkeleton />
+      <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+        <div className="container py-12">
+          <DashboardSkeleton />
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="container py-8">
-      <div className="flex items-center justify-between mb-8">
-        <div>
-          <h1 className="text-4xl font-bold mb-2">Dashboard</h1>
-          <p className="text-muted-foreground">
-            Manage your active simulations
-          </p>
-        </div>
-        <Link href="/simulation">
-          <Button variant="neon" className="neon-glow">
-            <PlusCircle className="mr-2 h-5 w-5" />
-            Start New Simulation
-          </Button>
-        </Link>
-      </div>
+    <div className="min-h-screen bg-gradient-to-br from-background via-background to-primary/5">
+      <div className="container py-12">
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6 mb-12"
+        >
+          <div className="space-y-2">
+            <h1 className="text-5xl font-bold tracking-tight gradient-text">
+              Dashboard
+            </h1>
+            <p className="text-lg text-muted-foreground">
+              Manage and monitor your active simulations
+            </p>
+          </div>
+          <Link href="/simulation">
+            <Button 
+              size="lg" 
+              className="bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+            >
+              <PlusCircle className="mr-2 h-5 w-5" />
+              Start New Simulation
+            </Button>
+          </Link>
+        </motion.div>
 
       {activeSimulations.length === 0 ? (
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="text-center py-20"
+          className="text-center py-24"
         >
-          <Card className="glass-effect max-w-md mx-auto">
-            <CardHeader>
-              <CardTitle>No Active Simulations</CardTitle>
-              <CardDescription>
-                Get started by creating your first simulation
+          <Card className="glass-effect max-w-lg mx-auto card-hover border-2 border-dashed">
+            <CardHeader className="space-y-4">
+              <div className="mx-auto w-20 h-20 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 flex items-center justify-center">
+                <PlusCircle className="h-10 w-10 text-primary" />
+              </div>
+              <CardTitle className="text-2xl">No Active Simulations</CardTitle>
+              <CardDescription className="text-base">
+                Get started by creating your first simulation. Watch AI agents collaborate and make decisions in real-time.
               </CardDescription>
             </CardHeader>
             <CardContent>
               <Link href="/simulation">
-                <Button variant="neon" className="w-full neon-glow">
+                <Button 
+                  size="lg" 
+                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white shadow-lg hover:shadow-xl transition-all duration-300"
+                >
                   <PlusCircle className="mr-2 h-5 w-5" />
-                  Start Simulation
+                  Create Your First Simulation
                 </Button>
               </Link>
             </CardContent>
@@ -151,43 +169,64 @@ export default function DashboardPage() {
           {activeSimulations.map((sim, idx) => (
             <motion.div
               key={sim.session_id}
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: idx * 0.1 }}
+              initial={{ opacity: 0, y: 20, scale: 0.95 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              transition={{ delay: idx * 0.05, duration: 0.3 }}
+              whileHover={{ y: -4 }}
             >
-              <Card className="glass-effect hover:neon-border h-full flex flex-col">
-                <CardHeader>
-                  <div className="flex items-start justify-between">
-                    <div className="flex-1">
-                      <CardTitle className="mb-2">{sim.name || "Untitled Simulation"}</CardTitle>
-                      <CardDescription className="line-clamp-2">
+              <Card className="glass-effect card-hover h-full flex flex-col group border-2 hover:border-primary/50 transition-all duration-300">
+                <CardHeader className="pb-4">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1 min-w-0">
+                      <CardTitle className="mb-2 text-lg font-semibold line-clamp-1 group-hover:text-primary transition-colors">
+                        {sim.name || "Untitled Simulation"}
+                      </CardTitle>
+                      <CardDescription className="line-clamp-2 text-sm">
                         {sim.description || sim.scenario.substring(0, 100)}
                       </CardDescription>
                     </div>
-                    <span className={`px-2 py-1 rounded-full text-xs font-medium ${
-                      sim.status === "active" ? "bg-green-500/20 text-green-500" :
-                      sim.status === "paused" ? "bg-yellow-500/20 text-yellow-500" :
-                      sim.status === "completed" ? "bg-blue-500/20 text-blue-500" :
-                      "bg-red-500/20 text-red-500"
-                    }`}>
+                    <motion.span 
+                      className={`px-3 py-1 rounded-full text-xs font-semibold whitespace-nowrap ${
+                        sim.status === "active" ? "bg-emerald-500/20 text-emerald-600 dark:text-emerald-400 border border-emerald-500/30" :
+                        sim.status === "paused" ? "bg-amber-500/20 text-amber-600 dark:text-amber-400 border border-amber-500/30" :
+                        sim.status === "completed" ? "bg-blue-500/20 text-blue-600 dark:text-blue-400 border border-blue-500/30" :
+                        "bg-red-500/20 text-red-600 dark:text-red-400 border border-red-500/30"
+                      }`}
+                      whileHover={{ scale: 1.05 }}
+                    >
                       {sim.status}
-                    </span>
+                    </motion.span>
                   </div>
                 </CardHeader>
-                <CardContent className="flex-1 flex flex-col">
-                  <div className="space-y-2 mb-4 flex-1">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Turn</span>
-                      <span className="font-medium">{sim.current_turn} / {sim.max_turns}</span>
+                <CardContent className="flex-1 flex flex-col pt-0">
+                  <div className="space-y-3 mb-6 flex-1">
+                    <div className="flex items-center justify-between p-3 rounded-lg bg-muted/50">
+                      <span className="text-sm text-muted-foreground">Progress</span>
+                      <div className="flex items-center gap-2">
+                        <span className="text-sm font-semibold">{sim.current_turn}</span>
+                        <span className="text-sm text-muted-foreground">/</span>
+                        <span className="text-sm text-muted-foreground">{sim.max_turns}</span>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-muted-foreground">Created</span>
-                      <span className="font-medium">{formatRelativeTime(sim.created_at)}</span>
+                    <div className="w-full bg-muted rounded-full h-2 overflow-hidden">
+                      <motion.div
+                        className="h-full bg-gradient-to-r from-indigo-600 to-purple-600"
+                        initial={{ width: 0 }}
+                        animate={{ width: `${(sim.current_turn / sim.max_turns) * 100}%` }}
+                        transition={{ duration: 0.5, delay: idx * 0.1 }}
+                      />
+                    </div>
+                    <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                      <span>Created {formatRelativeTime(sim.created_at)}</span>
                     </div>
                   </div>
-                  <div className="flex gap-2">
+                  <div className="flex gap-2 pt-4 border-t">
                     <Link href={`/simulation/${sim.session_id}`} className="flex-1">
-                      <Button variant="outline" className="w-full" size="sm">
+                      <Button 
+                        variant="default" 
+                        className="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white"
+                        size="sm"
+                      >
                         <ArrowRight className="mr-2 h-4 w-4" />
                         Open
                       </Button>
@@ -197,6 +236,7 @@ export default function DashboardPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => handlePause(sim.session_id)}
+                        className="hover:bg-amber-500/10 hover:border-amber-500/50"
                       >
                         <Pause className="h-4 w-4" />
                       </Button>
@@ -205,14 +245,16 @@ export default function DashboardPage() {
                         variant="outline"
                         size="sm"
                         onClick={() => handleResume(sim.session_id)}
+                        className="hover:bg-emerald-500/10 hover:border-emerald-500/50"
                       >
                         <Play className="h-4 w-4" />
                       </Button>
                     ) : null}
                     <Button
-                      variant="destructive"
+                      variant="outline"
                       size="sm"
                       onClick={() => handleDelete(sim.session_id)}
+                      className="hover:bg-destructive/10 hover:border-destructive/50 hover:text-destructive"
                     >
                       <Trash2 className="h-4 w-4" />
                     </Button>
@@ -223,6 +265,7 @@ export default function DashboardPage() {
           ))}
         </div>
       )}
+      </div>
     </div>
   )
 }
