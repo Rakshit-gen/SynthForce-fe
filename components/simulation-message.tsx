@@ -105,15 +105,15 @@ export function SimulationMessage({
       className={cn("mb-6", className)}
     >
       <Card className="glass-effect hover:border-primary/30 transition-all duration-300 group shadow-md hover:shadow-lg">
-        <CardContent className="p-6">
-          <div className="flex items-start justify-between mb-4">
-            <div className="flex items-center gap-3 flex-1">
-              <div className="relative">
+        <CardContent className="p-4 sm:p-6">
+          <div className="flex items-start justify-between mb-3 sm:mb-4 gap-2">
+            <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
+              <div className="relative flex-shrink-0">
                 <motion.div 
-                  className="p-3 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-primary/20"
+                  className="p-2 sm:p-3 rounded-full bg-gradient-to-br from-indigo-500/20 to-purple-500/20 border border-primary/20"
                   whileHover={{ scale: 1.1, rotate: 5 }}
                 >
-                  <Brain className="h-5 w-5 text-primary" />
+                  <Brain className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 </motion.div>
                 <motion.div
                   className="absolute inset-0 rounded-full bg-primary/20 blur-md"
@@ -122,12 +122,12 @@ export function SimulationMessage({
                 />
               </div>
               <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap">
-                  <span className="font-bold text-base capitalize text-foreground group-hover:text-primary transition-colors">
+                <div className="flex items-center gap-1.5 sm:gap-2 flex-wrap">
+                  <span className="font-bold text-sm sm:text-base capitalize text-foreground group-hover:text-primary transition-colors truncate">
                     {agentRole.replace(/_/g, " ")}
                   </span>
                   {turnNumber && (
-                    <Badge variant="outline" className="text-xs border-primary/30 text-primary">
+                    <Badge variant="outline" className="text-xs border-primary/30 text-primary flex-shrink-0">
                       Turn {turnNumber}
                     </Badge>
                   )}
@@ -142,7 +142,7 @@ export function SimulationMessage({
             {confidence && (
               <Badge 
                 variant="secondary" 
-                className="text-xs font-semibold bg-primary/10 text-primary border-primary/20"
+                className="text-xs font-semibold bg-primary/10 text-primary border-primary/20 flex-shrink-0"
               >
                 {Math.round(confidence * 100)}%
               </Badge>
@@ -150,22 +150,23 @@ export function SimulationMessage({
           </div>
 
           {/* Formatted Response */}
-          <div className="mb-3 prose prose-sm max-w-none dark:prose-invert">
+          <div className="mb-3 prose prose-sm sm:prose-base max-w-none dark:prose-invert text-sm sm:text-base">
             {formatResponse(response)}
           </div>
 
           {/* Action Buttons */}
           {(metrics || taskDistribution) && (
-            <div className="flex gap-2 mb-4 pt-3 border-t border-border/50">
+            <div className="flex gap-2 mb-4 pt-3 border-t border-border/50 flex-wrap">
               {metrics && (
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => setShowMetrics(!showMetrics)}
-                  className="text-xs hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all"
+                  className="text-xs hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all flex-1 sm:flex-initial"
                 >
                   <BarChart3 className="h-3.5 w-3.5 mr-1.5" />
-                  Metrics
+                  <span className="hidden sm:inline">Metrics</span>
+                  <span className="sm:hidden">Stats</span>
                   {showMetrics ? (
                     <ChevronUp className="h-3.5 w-3.5 ml-1.5" />
                   ) : (
@@ -178,10 +179,11 @@ export function SimulationMessage({
                   variant="outline"
                   size="sm"
                   onClick={() => setShowTasks(!showTasks)}
-                  className="text-xs hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all"
+                  className="text-xs hover:bg-primary/10 hover:border-primary/50 hover:text-primary transition-all flex-1 sm:flex-initial"
                 >
                   <ListTodo className="h-3.5 w-3.5 mr-1.5" />
-                  Tasks ({taskDistribution.length})
+                  <span className="hidden sm:inline">Tasks ({taskDistribution.length})</span>
+                  <span className="sm:hidden">Tasks</span>
                   {showTasks ? (
                     <ChevronUp className="h-3.5 w-3.5 ml-1.5" />
                   ) : (
